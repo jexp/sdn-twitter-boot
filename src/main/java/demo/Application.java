@@ -32,10 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Configuration
 @ComponentScan
@@ -66,12 +63,20 @@ public class Application extends Neo4jConfiguration {
     }
 
     @Bean
-    CommandLineRunner init(TweetRepository tweetRepository) {
-        return (args) -> tweetRepository.trendingTweets().forEach(map -> {
-            String tag = (String) map.get("tag");
-            Integer frequency = (Integer) map.get("frequency");
-            System.out.println(tag + ":" + frequency);
-        });
+    CommandLineRunner init(UserRepository userRepository,
+                           TweetRepository tweetRepository) {
+        return (args) -> {
+
+            System.out.println("Trending Tags: ");
+            tweetRepository.trendingTweets().forEach(map -> {
+                String tag = (String) map.get("tag");
+                Integer frequency = (Integer) map.get("frequency");
+                System.out.println(tag + ":" + frequency);
+            });
+
+            Arrays.asList("springcentral", "starbuxman", "neo4j").forEach(
+                    u -> userRepository.suggestFriends(u).forEach(suggestedUser -> System.out.println( "Suggested friend for " + u + ": " + suggestedUser.toString())));
+        };
     }
 }
 
