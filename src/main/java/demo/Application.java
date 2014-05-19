@@ -46,13 +46,12 @@ import java.util.Set;
 @EnableAutoConfiguration
 public class Application extends Neo4jConfiguration {
 
-    public Application() {
-        setBasePackage(User.class.getPackage().getName());
-    }
-
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+    }
+
+    Application() {
+        setBasePackage(User.class.getPackage().getName());
     }
 
     @Bean
@@ -64,6 +63,15 @@ public class Application extends Neo4jConfiguration {
     TwitterTemplate twitterTemplate(Environment environment) {
         String bearerToken = environment.getProperty("twitter.bearerToken");
         return new TwitterTemplate(bearerToken);
+    }
+
+    @Bean
+    CommandLineRunner init(TweetRepository tweetRepository) {
+        return (args) -> tweetRepository.trendingTweets().forEach(map -> {
+            String tag = (String) map.get("tag");
+            Integer frequency = (Integer) map.get("frequency");
+            System.out.println(tag + ":" + frequency);
+        });
     }
 }
 
