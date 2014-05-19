@@ -12,9 +12,10 @@ import java.util.Set;
 public interface UserRepository extends GraphRepository<User> {
 
     @Query( "MATCH (me:User {user:{name}})-[:POSTED]->(tweet)-[:MENTIONS]->(user)" +
-            "RETURN distinct user")
-    Set<User> suggestFriends(@Param("name")  User user);
+            " WHERE me <> user " +
+            " RETURN distinct user")
+    Set<User> suggestFriends(@Param("name") String user);
 
-    User findByUserId(Long userId);
+    User findByUser(@Param("0") String user);
 
 }

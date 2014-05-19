@@ -19,7 +19,7 @@
         <!-- use UTF-8 for everything -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <start-class>org.neo4j.twitter_graph.TwitterGraph</start-class>
+        <start-class>org.neo4j.twitter_graph.TwitterApplication</start-class>
     </properties>
 
     <dependencies>
