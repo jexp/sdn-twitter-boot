@@ -1,6 +1,7 @@
-package org.neo4j.twitter_graph.domain;
+package demo.domain;
 
 import org.neo4j.graphdb.Direction;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.*;
 
 import java.util.Collection;
@@ -8,22 +9,31 @@ import java.util.HashSet;
 import java.util.Set;
 
 @NodeEntity
-public class Tweet {
-    @GraphId Long id;
+@TypeAlias("Tweet")
+public class Message {
+
+    @GraphId
+    Long id;
 
     @Indexed(unique=true) Long tweetId;
 
     String text;
 
-    @Fetch @RelatedTo(type="POSTED", direction = Direction.INCOMING) User poster;
-    @Fetch @RelatedTo(type="TAGGED")   Collection<Tag> tags=new HashSet<Tag>();
-    @Fetch @RelatedTo(type="MENTIONS") Set<User> mentions=new HashSet<User>();
-    @Fetch @RelatedTo(type="SOURCE")   Tweet source;
+    @Fetch
+    @RelatedTo(type="POSTED", direction = Direction.INCOMING) User poster;
+    @Fetch @RelatedTo(type="TAGGED")
+    Collection<Tag> tags=new HashSet<Tag>();
 
-    public Tweet() {
+    @Fetch @RelatedTo(type="MENTIONS")
+    Set<User> mentions=new HashSet<User>();
+
+    @Fetch @RelatedTo(type="SOURCE")
+    Message source;
+
+    public Message() {
     }
 
-    public Tweet(long tweetId, User poster, String text) {
+    public Message(long tweetId, User poster, String text) {
         this.tweetId = tweetId;
         this.poster = poster;
         this.text = text;
@@ -61,11 +71,11 @@ public class Tweet {
         tags.add(tag);
     }
 
-    public void setSource(Tweet source) {
+    public void setSource(Message source) {
         this.source = source;
     }
 
-    public Tweet getSource() {
+    public Message getSource() {
         return source;
     }
 

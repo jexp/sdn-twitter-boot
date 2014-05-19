@@ -1,4 +1,4 @@
-package org.neo4j.twitter_graph.domain;
+package demo.domain;
 
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -10,7 +10,8 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
  */
 @NodeEntity
 public class Tag {
-    @GraphId Long id;
+    @GraphId
+    Long id;
     @Indexed(unique=true) private String tag;
 
     public Tag() {
